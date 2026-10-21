@@ -1,0 +1,33 @@
+# --- Claude Code -----------------------------------------------------------
+CLAUDE.md
+.claude/
+
+# --- Source material -------------------------------------------------------
+# The group's proposal document. Large binary, not a site asset, and its
+# author table is laid out for student IDs — keep it out of a public repo.
+# Images already extracted to assets/img/. Delete this line to track it.
+Assignment 3.docx
+
+# Word / Office lock files
+~$*.doc*
+~$*.xls*
+~$*.ppt*
+
+# --- OS --------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# --- Editors ---------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.sublime-workspace
+*~
+
+# --- Misc ------------------------------------------------------------------
+*.log
+tmp/
+scratch/
