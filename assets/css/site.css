@@ -14,10 +14,11 @@
      09  Cards & numbered features
      10  Callouts & figures
      11  Mini timeline
-     12  Buttons
-     13  Footer
-     14  Utilities & motion
-     15  Print
+     12  Interior pages: head, subnav, scope, WBS, kill points, charts
+     13  Buttons
+     14  Footer
+     15  Utilities & motion
+     16  Print
    ========================================================================== */
 
 
@@ -47,6 +48,10 @@
   /* Data accent — large figures and chart fills only, never small text */
   --amber:       #B4721E;
   --amber-light: #E3B26B;
+
+  /* Negative accent — exclusions, "no-go" outcomes, high severity */
+  --clay:       #A4432E;
+  --clay-light: #E8B4A6;
 
   /* Type */
   --font-serif: "Source Serif 4", "Source Serif Pro", Georgia, "Times New Roman", serif;
@@ -663,7 +668,7 @@ strong { font-weight: 650; }
   font-weight: 600;
   line-height: 1.15;
   color: var(--green-800);
-  font-variant-numeric: tabular-nums;
+  /* proportional figures — tabular-nums reads loose at display sizes */
 }
 
 .callout__text {
@@ -785,7 +790,809 @@ strong { font-weight: 650; }
 }
 
 
-/* 12  Buttons ============================================================= */
+/* 12  Interior pages ====================================================== */
+
+/* --- Page head: the interior-page counterpart to the landing hero -------- */
+.page-head {
+  position: relative;
+  padding-block: clamp(2.5rem, 1.5rem + 4vw, 4.5rem) clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem);
+  border-bottom: 1px solid var(--rule);
+  overflow: hidden;
+}
+
+.page-head::before {
+  content: "";
+  position: absolute;
+  inset: -45% 45% 15% -25%;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--green-600) 12%, transparent), transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-head > * { position: relative; z-index: 1; }
+
+.page-head__title {
+  font-size: var(--step-5);
+  letter-spacing: -0.022em;
+  max-width: 18ch;
+}
+
+.page-head__lede {
+  margin-top: var(--sp-m);
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--slate);
+  max-width: 58ch;
+}
+
+/* --- Jump-to chips ------------------------------------------------------- */
+.subnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: var(--sp-l);
+}
+
+.subnav a {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  padding: 0.45rem 0.95rem;
+  border: 1px solid var(--rule);
+  border-radius: 100px;
+  background: #fff;
+  color: var(--slate);
+  text-decoration: none;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.subnav a:hover {
+  border-color: var(--green-600);
+  color: var(--green-800);
+  background: var(--green-050);
+}
+
+/* --- Objective statement ------------------------------------------------- */
+.statement {
+  background: var(--green-900);
+  color: var(--paper);
+  border-left: 4px solid var(--green-400);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: var(--sp-l) clamp(1.5rem, 1rem + 2.5vw, 3rem);
+}
+
+.statement__label {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  color: var(--green-300);
+  margin-bottom: var(--sp-s);
+}
+
+.statement__text {
+  font-family: var(--font-serif);
+  font-size: var(--step-2);
+  font-weight: 600;
+  line-height: 1.32;
+  color: #fff;
+  max-width: 54ch;
+}
+
+/* --- Marked lists -------------------------------------------------------- */
+.list-mark {
+  display: grid;
+  gap: 0.45rem;
+  list-style: none;
+  padding: 0;
+}
+
+.list-mark li {
+  position: relative;
+  padding-left: 1.35rem;
+  font-size: var(--step--1);
+  line-height: 1.5;
+}
+
+.list-mark li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.58em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green-400);
+}
+
+/* Exclusions — same rhythm, negative marker */
+.list-x li::before {
+  content: "\00d7";
+  width: auto;
+  height: auto;
+  top: 0;
+  background: none;
+  color: var(--clay);
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.5;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--sp-l);
+}
+
+.panel--exclude { border-left: 4px solid var(--clay); }
+
+.panel__title { margin-bottom: var(--sp-s); }
+
+.panel__note {
+  margin-top: var(--sp-m);
+  padding-top: var(--sp-s);
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--2);
+  color: var(--slate);
+  line-height: 1.55;
+}
+
+/* --- Work breakdown structure -------------------------------------------- */
+.wbs-grid {
+  display: grid;
+  gap: var(--sp-m);
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.wbs-pkg {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--green-800);
+  border-radius: var(--radius);
+  padding: var(--sp-m);
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.wbs-pkg:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.wbs-pkg__id {
+  font-family: var(--font-serif);
+  font-size: var(--step-3);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--green-100);
+  float: right;
+  margin-left: var(--sp-xs);
+}
+
+.wbs-pkg__title {
+  font-size: var(--step-1);
+  margin-bottom: var(--sp-s);
+  padding-right: 2rem;
+}
+
+.wbs-pkg__tasks {
+  display: grid;
+  gap: 0.3rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--sp-s);
+}
+
+.wbs-pkg__tasks li {
+  display: grid;
+  grid-template-columns: 2.1rem 1fr;
+  gap: 0.3rem;
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+
+.wbs-pkg__tasks b {
+  font-weight: 600;
+  color: var(--green-800);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Wide figure that scrolls rather than shrinking to illegibility ------ */
+.figure--scroll .figure__scroller {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+}
+
+.figure--scroll img {
+  min-width: 54rem;
+  border: 0;
+  border-radius: 0;
+}
+
+.figure__hint {
+  font-size: var(--step--2);
+  color: var(--slate);
+  margin-top: var(--sp-xs);
+}
+
+/* --- Kill points --------------------------------------------------------- */
+.kp-list {
+  display: grid;
+  gap: var(--sp-m);
+  list-style: none;
+  padding: 0;
+}
+
+.kp {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--amber);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: var(--sp-l);
+}
+
+.kp__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-s);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-s);
+}
+
+.kp__num {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--amber);
+  white-space: nowrap;
+}
+
+.kp__title { font-size: var(--step-2); }
+
+.kp__body { max-width: var(--measure); }
+
+.kp__body > * + * { margin-top: var(--sp-s); }
+
+.kp__body p { font-size: var(--step--1); line-height: 1.6; }
+
+.kp__decision {
+  display: grid;
+  gap: var(--sp-s);
+  grid-template-columns: 1fr;
+  margin-top: var(--sp-m);
+  padding-top: var(--sp-m);
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 42rem) {
+  .kp__decision { grid-template-columns: 1fr 1fr; gap: var(--sp-m); }
+}
+
+.kp__outcome {
+  font-size: var(--step--1);
+  line-height: 1.5;
+}
+
+.kp__outcome dt {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.kp__outcome dd { margin: 0; color: var(--slate); }
+
+.kp__outcome--go dt { color: var(--green-800); }
+.kp__outcome--no dt { color: var(--clay); }
+
+
+/* --- Charts -------------------------------------------------------------
+   Chart colours are NOT the brand tokens. --green-800 (#006D56) fails the
+   categorical chroma floor (0.093, reads gray), and green-vs-amber collides
+   under deuteranopia (ΔE 5.6). Validated with the dataviz palette checker
+   against a #FFFFFF surface:
+
+     single-series bars  #006D56  — contrast 6.1:1, no categorical check needed
+     planned / reserve   #00A055 + #A4432E  — ΔE 10.2 deutan, all checks pass
+
+   Re-run the validator before changing either.
+   ---------------------------------------------------------------------- */
+
+:root {
+  --chart-bar:     #006D56;  /* single series */
+  --chart-planned: #00A055;  /* categorical slot 1 */
+  --chart-reserve: #A4432E;  /* categorical slot 2 */
+  --chart-track:   #E8EBE7;  /* one step off surface */
+}
+
+/* Hero figure — sans, proportional figures (tabular looks loose at size) */
+.figure-hero {
+  font-family: var(--font-sans);
+  font-size: clamp(2.75rem, 2rem + 3.5vw, 4rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+/* Two-segment allocation bar: planned vs contingency ---------------------- */
+.alloc__bar {
+  display: flex;
+  gap: 2px;              /* the surface gap does the separating, not a border */
+  height: 22px;
+  margin-bottom: var(--sp-m);
+}
+
+.alloc__seg {
+  flex: 0 0 calc(var(--pct) * 1%);
+  border-radius: 0;      /* square at the baseline */
+  min-width: 2px;
+}
+
+.alloc__seg:last-child { border-radius: 0 4px 4px 0; }  /* rounded data-end */
+
+.alloc__seg--planned { background: var(--chart-planned); }
+.alloc__seg--reserve { background: var(--chart-reserve); }
+
+.alloc__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-s) var(--sp-l);
+  list-style: none;
+  padding: 0;
+  font-size: var(--step--1);
+}
+
+.alloc__legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.alloc__legend b {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.swatch--planned { background: var(--chart-planned); }
+.swatch--reserve { background: var(--chart-reserve); }
+
+/* Budget table with inline bars ------------------------------------------
+   The table IS the chart's table view — every value is readable as text, so
+   no tooltip is needed and none is used. */
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+
+.budget-table caption {
+  text-align: left;
+  font-size: var(--step--2);
+  color: var(--slate);
+  padding-bottom: var(--sp-s);
+}
+
+.budget-table th,
+.budget-table td {
+  padding: 0.7rem var(--sp-s) 0.7rem 0;
+  border-bottom: 1px solid var(--rule);   /* hairline, solid, recessive */
+  vertical-align: middle;
+  text-align: left;
+}
+
+.budget-table thead th {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--slate);
+  white-space: nowrap;
+}
+
+.budget-table tbody th {
+  font-weight: 500;
+  line-height: 1.4;
+  padding-right: var(--sp-m);
+}
+
+.budget-table tbody tr { transition: background 0.15s var(--ease); }
+.budget-table tbody tr:hover { background: var(--green-050); }
+
+.budget-table .ta-r { text-align: right; font-variant-numeric: tabular-nums; }
+
+.budget-table__bar { width: 38%; min-width: 7rem; }
+
+@media (max-width: 44rem) {
+  .budget-table__bar { display: none; }  /* values still carry the data */
+}
+
+.bar-track {
+  display: block;
+  height: 10px;                 /* thin mark, well under the 24px cap */
+  background: var(--chart-track);
+  border-radius: 0 2px 2px 0;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--pct) * 1%);
+  background: var(--chart-bar);
+  border-radius: 0 4px 4px 0;   /* rounded data-end, square at baseline */
+}
+
+.budget-table tfoot th,
+.budget-table tfoot td {
+  font-weight: 600;
+  border-bottom: 0;
+  border-top: 1px solid var(--rule);
+  padding-top: var(--sp-s);
+}
+
+.budget-table tfoot .is-total th,
+.budget-table tfoot .is-total td {
+  border-top: 2px solid var(--ink);
+  font-size: var(--step-0);
+}
+
+.budget-table__note {
+  font-size: var(--step--2);
+  color: var(--slate);
+  margin-top: var(--sp-s);
+  line-height: 1.55;
+}
+
+/* Cost justification cards ------------------------------------------------ */
+.cost-card { border-left: 4px solid var(--green-800); }
+
+.cost-card__amount {
+  font-family: var(--font-sans);
+  font-size: var(--step-3);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--green-800);
+  line-height: 1;
+}
+
+.cost-card__title {
+  font-size: var(--step-1);
+  margin-top: var(--sp-2xs);
+  margin-bottom: var(--sp-s);
+}
+
+.cost-card__body { font-size: var(--step--1); line-height: 1.6; }
+
+.cost-card__source {
+  display: block;
+  margin-top: var(--sp-m);
+  padding-top: var(--sp-s);
+  border-top: 1px solid var(--rule);
+  font-size: var(--step--2);
+  color: var(--slate);
+  line-height: 1.5;
+}
+
+/* Metric definitions ------------------------------------------------------ */
+.metric-grid {
+  display: grid;
+  gap: var(--sp-m);
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+.metric {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--sp-m);
+}
+
+.metric__abbr {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--green-800);
+}
+
+.metric__name {
+  font-family: var(--font-serif);
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin-top: 0.1rem;
+}
+
+.metric__formula {
+  display: inline-block;
+  margin-top: var(--sp-xs);
+  padding: 0.25rem 0.6rem;
+  background: var(--green-050);
+  border-radius: var(--radius);
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--green-800);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric__reads {
+  margin-top: var(--sp-s);
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--slate);
+}
+
+/* Numbered process steps -------------------------------------------------- */
+.steps {
+  display: grid;
+  gap: var(--sp-m);
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+
+@media (min-width: 52rem) {
+  .steps { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+}
+
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding-top: var(--sp-m);
+  border-top: 2px solid var(--green-100);
+  font-size: var(--step--1);
+  line-height: 1.55;
+}
+
+.steps li::before {
+  content: counter(step);
+  position: absolute;
+  top: -0.9rem;
+  left: 0;
+  width: 1.65rem;
+  height: 1.65rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--green-800);
+  color: #fff;
+  font-size: var(--step--2);
+  font-weight: 700;
+}
+
+.steps b {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: var(--step-1);
+  font-weight: 600;
+  margin-bottom: var(--sp-2xs);
+  color: var(--ink);
+}
+
+
+/* --- SWOT ---------------------------------------------------------------- */
+.swot {
+  display: grid;
+  gap: var(--sp-m);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 50rem) {
+  .swot { grid-template-columns: 1fr 1fr; }
+}
+
+.swot__q {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--sp-l);
+  background: #fff;
+}
+
+.swot__q--pos { border-top: 3px solid var(--green-800); }
+.swot__q--neg { border-top: 3px solid var(--clay); }
+
+.swot__axis {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: 0.15rem;
+}
+
+.swot__q h3 { margin-bottom: var(--sp-s); }
+
+.list-mark--neg li::before { background: var(--clay); }
+
+
+/* --- Risk matrix ---------------------------------------------------------
+   Severity x probability. Cell tint is an ORDERED ramp of a single hue
+   (--clay at 3 opacities), so it is monotonic by construction and safe for
+   every form of CVD. Each cell also carries its level as text, so the tint
+   is never the only signal. The risk cards below are the table view.
+   ---------------------------------------------------------------------- */
+.matrix {
+  display: grid;
+  grid-template-columns: auto 1fr 1fr;
+  gap: 2px;                      /* surface gap, not borders */
+  align-items: stretch;
+}
+
+.matrix__corner { background: transparent; }
+
+.matrix__colhead,
+.matrix__rowhead {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  padding: var(--sp-xs) var(--sp-2xs);
+}
+
+.matrix__colhead { justify-content: center; text-align: center; }
+
+.matrix__rowhead {
+  writing-mode: horizontal-tb;
+  max-width: 6.5rem;
+  line-height: 1.3;
+}
+
+.matrix__cell {
+  padding: var(--sp-m);
+  border-radius: var(--radius);
+  min-height: 8.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-xs);
+}
+
+.matrix__cell--moderate { background: color-mix(in srgb, var(--clay) 8%,  #fff); }
+.matrix__cell--elevated { background: color-mix(in srgb, var(--clay) 17%, #fff); }
+.matrix__cell--critical { background: color-mix(in srgb, var(--clay) 30%, #fff); }
+
+.matrix__level {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: var(--clay);
+}
+
+.risk-chip {
+  display: block;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.7rem;
+  font-size: var(--step--1);
+  line-height: 1.35;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+.risk-chip:hover {
+  border-color: var(--green-600);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+}
+
+.risk-chip b {
+  display: block;
+  font-size: var(--step--2);
+  letter-spacing: 0.1em;
+  color: var(--clay);
+  font-weight: 700;
+}
+
+@media (max-width: 40rem) {
+  .matrix { grid-template-columns: 1fr; }
+  .matrix__corner { display: none; }
+  .matrix__colhead { justify-content: flex-start; text-align: left; }
+  .matrix__rowhead { max-width: none; }
+  .matrix__cell { min-height: 0; }
+}
+
+
+/* --- Risk register cards ------------------------------------------------- */
+.risk-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--clay);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: var(--sp-l);
+  scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+}
+
+.risk-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-s);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-s);
+}
+
+.risk-card__id {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 700;
+  color: var(--clay);
+}
+
+.risk-card__title { font-size: var(--step-2); }
+
+.risk-card__mitigation {
+  font-size: var(--step--1);
+  line-height: 1.6;
+  max-width: var(--measure);
+}
+
+.risk-card__mitigation strong { color: var(--green-800); }
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin-bottom: var(--sp-m);
+}
+
+.badge {
+  font-size: var(--step--2);
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 100px;
+  background: var(--paper-alt);
+  color: var(--slate);
+  white-space: nowrap;
+}
+
+.badge--high { background: color-mix(in srgb, var(--clay) 15%, #fff); color: var(--clay); }
+.badge--med  { background: color-mix(in srgb, var(--amber) 16%, #fff); color: #8A5615; }
+
+
+/* --- Stakeholders & departments ------------------------------------------ */
+.stake-card__role {
+  font-size: var(--step--2);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--green-800);
+  margin-bottom: 0.2rem;
+}
+
+.stake-card__name {
+  font-size: var(--step-1);
+  margin-bottom: var(--sp-2xs);
+}
+
+.stake-card__body {
+  font-size: var(--step--1);
+  line-height: 1.55;
+  color: var(--slate);
+}
+
+
+/* 13  Buttons ============================================================= */
 
 .btn {
   display: inline-flex;
@@ -840,7 +1647,7 @@ strong { font-weight: 650; }
 .link-more:hover { border-bottom-color: currentColor; }
 
 
-/* 13  Footer ============================================================== */
+/* 14  Footer ============================================================== */
 
 .site-footer {
   background: var(--green-950);
@@ -902,9 +1709,10 @@ strong { font-weight: 650; }
 .site-footer__disclaimer { max-width: 62ch; }
 
 
-/* 14  Utilities & motion ================================================== */
+/* 15  Utilities & motion ================================================== */
 
 .mt-xl { margin-top: var(--sp-xl); }
+.mb-m  { margin-bottom: var(--sp-m); }
 
 .visually-hidden {
   position: absolute;
@@ -950,26 +1758,38 @@ strong { font-weight: 650; }
 }
 
 
-/* 15  Print =============================================================== */
+/* 16  Print =============================================================== */
 
 @media print {
   :root { --paper: #fff; --paper-alt: #fff; }
 
   body { border-top: 0; font-size: 10.5pt; background: #fff; }
 
-  .site-nav, .skip-link, .actions, .btn, .link-more { display: none !important; }
+  .site-nav, .skip-link, .actions, .btn, .link-more,
+  .subnav, .hero__cue, .figure__hint { display: none !important; }
 
-  .section, .hero { padding-block: 1.2rem; break-inside: avoid; }
+  .section, .hero, .page-head { padding-block: 1.2rem; break-inside: avoid; }
 
-  .section--dark, .statband, .site-footer {
+  .section--dark, .statband, .site-footer, .statement {
     background: #fff !important;
     color: #000 !important;
   }
 
   .section--dark h2, .section--dark h3,
-  .site-footer__mark, .stat__value { color: #000 !important; }
+  .site-footer__mark, .stat__value,
+  .statement__text, .statement__label { color: #000 !important; }
+
+  .statement { border-left: 3px solid #666; }
 
   .stat__label, .card__body, .site-footer { color: #333 !important; }
+
+  .page-head::before { display: none; }
+
+  .kp, .wbs-pkg, .panel { break-inside: avoid; border-color: #ccc; }
+
+  /* Wide diagrams must print whole rather than clipped at the scroll edge */
+  .figure--scroll .figure__scroller { overflow: visible; border-color: #ccc; }
+  .figure--scroll img { min-width: 0; width: 100%; }
 
   .statband__grid { background: none; border-color: #ccc; }
   .stat { background: #fff; border: 1px solid #ccc; }
