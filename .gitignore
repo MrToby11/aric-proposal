@@ -8,6 +8,11 @@ CLAUDE.md
 # Images already extracted to assets/img/. Delete this line to track it.
 Assignment 3.docx
 
+# The original 1080p60 screen recording (57 MB). Cloudflare Pages rejects any
+# file over 25 MiB, so the deployed copy is the re-encoded 720p30 version at
+# assets/video/presentation.mp4. Keep the master locally, out of the repo.
+Group 8 presentation video.mp4
+
 # Word / Office lock files
 ~$*.doc*
 ~$*.xls*
