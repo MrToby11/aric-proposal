@@ -1724,6 +1724,45 @@ strong { font-weight: 650; }
 }
 
 
+/* --- Presentation video --------------------------------------------------
+   The <video> is the one element on the site that must not be allowed to
+   exceed the viewport height: a 16:9 player at full wrap width is taller
+   than a laptop screen once the nav is accounted for, which puts the
+   controls off-screen. Hence the max-height cap and the letterbox ground. */
+.video-frame {
+  display: flex;
+  justify-content: center;
+  background: var(--green-950);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* auto width + both maxima: the player scales on its own 16:9 ratio, so it
+   never pillarboxes — it just stops growing at whichever limit it meets. */
+.video-frame video {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(72svh, 40rem);
+  background: var(--green-950);
+}
+
+.video-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2xs) var(--sp-m);
+  margin-top: var(--sp-s);
+  font-size: var(--step--2);
+  color: var(--slate);
+}
+
+.video-meta__item { display: inline-flex; gap: 0.4rem; align-items: baseline; }
+.video-meta__item b { color: var(--ink); font-weight: 600; }
+
+
 /* 13  Buttons ============================================================= */
 
 .btn {
